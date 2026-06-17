@@ -1,0 +1,9 @@
+﻿__pycache__/
+*.py[cod]
+*.nbc
+*.nbi
+.ipynb_checkpoints/
+temp*.inp
+temp*.rpt
+temp*.bin
+.DS_Store
