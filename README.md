@@ -22,8 +22,6 @@ or:
 pip install -r requirements-local.txt
 ```
 
-The Conda environment is recommended.
-
 ## File Overview
 
 1. [EKFs_Main_Results_colab_version.ipynb](https://github.com/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/EKFs_Main_Results_colab_version.ipynb) contains the main code for the paper, including the comparison among the three EKF variants and the corresponding visualization results.
