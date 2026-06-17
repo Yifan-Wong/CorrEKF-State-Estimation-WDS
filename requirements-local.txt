@@ -1,0 +1,14 @@
+# Original project environment reference.
+# For local reproduction, prefer Python 3.9 and install these packages as needed.
+wntr==1.2.0
+viswaternet==2.2.2
+ptitprince==0.2.7
+bmondata==1.0.6
+numpy==1.22.4
+pandas==1.4.4
+matplotlib==3.5.2
+scipy==1.10.1
+seaborn==0.11.0
+scikit-learn==1.5.2
+statsmodels==0.14.5
+openpyxl==3.1.5
