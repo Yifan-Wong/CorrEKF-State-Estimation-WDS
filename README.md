@@ -1,13 +1,47 @@
 # CorrEKF-State-Estimation-WDS
-State Estimation of Water Distribution System (WDS) Using Correlated Extended Kalman Filtering (CorrEKF)
 
-## Reproduce results
-1. Create environment: `conda env create -f environment.yml` (recommended) or `pip install -r requirements.txt`
-2. Run: `python run_experiment.py --config configs/exp1.yaml`
-3. Outputs will appear in `results/`
+This repository provides the code for the paper **"Correlation-aware State Estimation in Real Water Distribution Systems with Various Sources of Uncertainty"**.
+
+## Quick Start
+
+To make the main workflow easier to run, we provide a Google Colab version of the main notebook:
+
+- [EKFs_Main_Results_colab_version.ipynb](https://github.com/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/EKFs_Main_Results_colab_version.ipynb)
+
+This Colab notebook allows readers to run the main code without manually setting up a local virtual environment.
+
+If you prefer to run the notebooks locally, create the environment with one of the following commands:
+
+```bash
+conda env create -f environment.yml
+```
+
+or:
+
+```bash
+pip install -r requirements-local.txt
+```
+
+The Conda environment is recommended.
+
+## File Overview
+
+1. [EKFs_Main_Results_colab_version.ipynb](https://github.com/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/EKFs_Main_Results_colab_version.ipynb) contains the main code for the paper, including the comparison among the three EKF variants and the corresponding visualization results.
+
+2. [EKFs_Main_Results.ipynb](https://github.com/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/EKFs_Main_Results.ipynb) contains the same main workflow as the Colab notebook, but in a standard Jupyter Notebook format. It requires a local environment setup before running.
+
+3. [Model_vs_truth.ipynb](https://github.com/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/Model_vs_truth.ipynb) compares the imperfect hydraulic model with the ground-truth hydraulic dynamics.
+
+4. [Multiple_uncertainty_sources.ipynb](https://github.com/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/Multiple_uncertainty_sources.ipynb) compares the effects of different uncertainty sources on the hydraulic dynamics.
+
+5. [Pipedream validation.ipynb](https://github.com/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/Pipedream%20validation.ipynb) validates the state-space model used in this paper against EPANET.
+
+6. The remaining Python files and the `pipedream_solver/` folder provide helper functions and solver routines used by the notebooks.
 
 ## Citation
-Please cite: Huang et al., Journal, Year (TBA, under review). Code DOI: <(TBA)>
+
+Citation information will be added after publication.
 
 ## License
+
 MIT
