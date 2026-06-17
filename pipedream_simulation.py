@@ -194,14 +194,14 @@ def run_pipedream_simulation(inp, t_run=None, dt=None, banded=False, num_iter=40
             u_p[PU5_id] = 0
         
         # Tank 4
-        if model.H_j[T4_id] < 132.5 + 2 - 2: # yifan adjust
+        if model.H_j[T4_id] < 132.5 + 2 - 2: # adjust
             u_p[PU6_id] = 1
         if model.H_j[T4_id] > 132.5 + 3.5 + 2:
             u_p[PU6_id] = 0
             
-        if model.H_j[T4_id] < 132.5 + 3: # yifan adjust
+        if model.H_j[T4_id] < 132.5 + 3: # adjust
             u_p[PU7_id] = 1
-        if model.H_j[T4_id] > 132.5 + 4.5 - 0.3: # yifan adjust
+        if model.H_j[T4_id] > 132.5 + 4.5 - 0.3: # adjust
             u_p[PU7_id] = 0
             
         # Tank 5
@@ -213,7 +213,7 @@ def run_pipedream_simulation(inp, t_run=None, dt=None, banded=False, num_iter=40
         # Tank 7
         if model.H_j[T7_id] < 102 + 2.5:
             u_p[PU10_id] = 1
-        if model.H_j[T7_id] > 102 + 4.8 - 0.5: # yifan adjust
+        if model.H_j[T7_id] > 102 + 4.8 - 0.5: # adjust
             u_p[PU10_id] = 0
             
         if model.H_j[T7_id] < 102 + 1:

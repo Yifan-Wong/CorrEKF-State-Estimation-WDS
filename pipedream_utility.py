@@ -35,7 +35,7 @@ def wntr_2_pd(wn,t_run, dt):
     c = np.zeros(len(junction_names))
     dem = np.zeros(len(junction_names))
     tank = [False]*len(junction_names)
-    tank_fake_node = [False]*len(junction_names) # Yifan add, for the criteria based on the fake node
+    tank_fake_node = [False]*len(junction_names) # for the criteria based on the fake node
     pat = [None]*len(junction_names)
     has_tanks = 0
     num_tanks = 0
@@ -253,8 +253,8 @@ def wntr_2_pd(wn,t_run, dt):
             superjunctions_new['a']=0
             superjunctions_new['b']=0
             superjunctions_new['c']=1e-5
-            superjunctions_new['max_depth']= wn.get_node(superjunctions_m['name'][tank_ind]).elevation + wn.get_node(superjunctions_m['name'][tank_ind]).max_level  # if there a free water surface (Yifan add)
-            #superjunctions_new['max_depth']= -0.1 + wn.get_node(superjunctions_m['name'][tank_ind]).max_level # if no free water surface (Yifan add)
+            superjunctions_new['max_depth']= wn.get_node(superjunctions_m['name'][tank_ind]).elevation + wn.get_node(superjunctions_m['name'][tank_ind]).max_level  # if there a free water surface 
+            #superjunctions_new['max_depth']= -0.1 + wn.get_node(superjunctions_m['name'][tank_ind]).max_level # if no free water surface 
             superjunctions_new['map_x']=superjunctions_m['map_x'][superjunctions_m['id']==tank_ind].values[0]
             superjunctions_new['map_y']=superjunctions_m['map_y'][superjunctions_m['id']==tank_ind].values[0]
             superjunctions_new['tank']=False

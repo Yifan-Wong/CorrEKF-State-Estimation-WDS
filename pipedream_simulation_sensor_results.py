@@ -13,7 +13,6 @@ from pipedream_solver.simulation import Simulation
 from pipedream_solver.nutils import interpolate_sample
 import random
 import time
-# import pipedream_utility_v3 as pdu
 import pipedream_utility as pdu
 from matplotlib.ticker import FormatStrFormatter
 
@@ -76,7 +75,7 @@ def run_pipedream_simulation_sensor(inp, t_run=None, dt=None, banded=False, num_
     
     tank_nodes = superjunctions['tank'] 
     model_ele = superjunctions['z_inv'].copy()
-    vals = rng.uniform(-0.5, 0.5, (len(superjunctions))) # used to be uniform
+    vals = rng.uniform(-0.5, 0.5, (len(superjunctions))) # should be uniform, large noise would cause flipped flow
     superjunctions.loc[~tank_nodes, 'z_inv'] += vals[~tank_nodes]
     real_ele = superjunctions['z_inv'].copy()
     ele_error = model_ele - real_ele
@@ -86,7 +85,6 @@ def run_pipedream_simulation_sensor(inp, t_run=None, dt=None, banded=False, num_
     vals = rng.normal(0., 10., len(superlinks)) 
     superlinks['roughness'] += vals
     ###############################################################################
-    #### TODO: Should this be all demand columns?
     # STEP 3: change the demand pattern
     mult_df.iloc[:,:] *= rng.uniform(0.8, 1.2, mult_df.size).reshape(mult_df.shape)
     
@@ -179,6 +177,7 @@ def run_pipedream_simulation_sensor(inp, t_run=None, dt=None, banded=False, num_
         #         u_p[pump_id] = events_controls_pairs[key]['Upper lim stat']
         #     if model.H_j[node_id] < events_controls_pairs[key]['Lower lim']:
         #         u_p[pump_id] = events_controls_pairs[key]['Lower lim stat']
+        
         #%% manually set the control rules
         # open link --> 1, close link --> 0
         T1_id = list(model.superjunctions.loc[model.superjunctions['name']=='T1','id'])[0]
@@ -212,7 +211,7 @@ def run_pipedream_simulation_sensor(inp, t_run=None, dt=None, banded=False, num_
         # Tank 2
         if model.H_j[T2_id] < 65 + 0.5 + 0.4:
             u_o[7] = 1
-        if model.H_j[T2_id] > 65 + 5.5 + 0.0: # different
+        if model.H_j[T2_id] > 65 + 5.5 + 0.0: # different than hydraulic model
             u_o[7] = 0
         
         # Tank 3
@@ -227,14 +226,14 @@ def run_pipedream_simulation_sensor(inp, t_run=None, dt=None, banded=False, num_
             u_p[PU5_id] = 0
         
         # Tank 4
-        if model.H_j[T4_id] < 132.5 + 2 - 0: # adjust
+        if model.H_j[T4_id] < 132.5 + 2 - 0: # different than hydraulic model
             u_p[PU6_id] = 1
         if model.H_j[T4_id] > 132.5 + 3.5 + 0:
             u_p[PU6_id] = 0
             
-        if model.H_j[T4_id] < 132.5 + 3 - 0.2: # adjust
+        if model.H_j[T4_id] < 132.5 + 3 - 0.2: # different than hydraulic model
             u_p[PU7_id] = 1
-        if model.H_j[T4_id] > 132.5 + 4.5 - 0.3: # adjust
+        if model.H_j[T4_id] > 132.5 + 4.5 - 0.3: # different than hydraulic model
             u_p[PU7_id] = 0
             
         # Tank 5
@@ -246,7 +245,7 @@ def run_pipedream_simulation_sensor(inp, t_run=None, dt=None, banded=False, num_
         # Tank 7
         if model.H_j[T7_id] < 102 + 2.5:
             u_p[PU10_id] = 1
-        if model.H_j[T7_id] > 102 + 4.8 - 0.2: # adjust
+        if model.H_j[T7_id] > 102 + 4.8 - 0.2: # different than hydraulic model
             u_p[PU10_id] = 0
             
         if model.H_j[T7_id] < 102 + 1:

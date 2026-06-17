@@ -13,7 +13,6 @@ from pipedream_solver.simulation import Simulation
 from pipedream_solver.nutils import interpolate_sample
 import random
 import time
-# import pipedream_utility_v3 as pdu
 import pipedream_utility as pdu
 from matplotlib.ticker import FormatStrFormatter
 
@@ -22,7 +21,7 @@ from matplotlib.ticker import FormatStrFormatter
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
  
-def create_full_matrix(model, dt, Q_in):  # yifan delete Q_Ik
+def create_full_matrix(model, dt, Q_in):  # delete Q_Ik
     g = 9.81
     ndim = model.M + (model.NK * 5) + model.n_o + model.n_p + model.n_prv
     A_1 = np.zeros((ndim, ndim))
@@ -58,10 +57,10 @@ def create_full_matrix(model, dt, Q_in):  # yifan delete Q_Ik
     A_1[model._J_dk, dk] = -1.
     A_1[model._J_uo, o] = 1.
     A_1[model._J_do, o] = -1.
-    # yifan add mass balance for Pump
+    # add mass balance for Pump
     A_1[model._J_up, p] = 1.
     A_1[model._J_dp, p] = -1.
-    # yifan add mass balance for PRV
+    # add mass balance for PRV
     A_1[model._J_uprv, prv] = 1.
     A_1[model._J_dprv, prv] = -1.
     
@@ -84,7 +83,7 @@ def create_full_matrix(model, dt, Q_in):  # yifan delete Q_Ik
     A_1[o, model._J_uo] = -model._alpha_o
     A_1[o, model._J_do] = -model._beta_o
     D[o] = model._chi_o
-    # yifan add pump and prv
+    # add pump and prv
     A_1[p, p] = 1.
     A_1[p, model._J_up] = -model._alpha_p
     A_1[p, model._J_dp] = -model._beta_p
@@ -102,8 +101,8 @@ def create_full_matrix(model, dt, Q_in):  # yifan delete Q_Ik
     A_1[Ik_offset + model._Ik, ik] = 1.
     A_1[Ik_offset + model._Ip1k, ik] = -1.
     # Fix this
-    A_2[Ik, Ik] = model._D_Ik / model.states['h_Ik']   # yifan delete Q_Ik  (model._D_Ik - Q_Ik) / model.states['h_Ik']
-    # u[Ik] = Q_Ik  # yifan delete Q_Ik
+    A_2[Ik, Ik] = model._D_Ik / model.states['h_Ik']   # delete Q_Ik  (model._D_Ik - Q_Ik) / model.states['h_Ik']
+    # u[Ik] = Q_Ik  # delete Q_Ik
     
     A_1[ik, ik] = model._b_ik
     A_1[ik_offset + model._i_1k, uk] = model._a_ik
@@ -114,7 +113,6 @@ def create_full_matrix(model, dt, Q_in):  # yifan delete Q_Ik
     A_2[ik, ik] = model._dx_ik / dt
     D[ik] = g * model._A_ik * model._S_o_ik * model._dx_ik
 
-    # yifan add
     variables_to_concatenate = [model.states[var] for var in ['H_j', 'Q_uk', 'Q_dk', 'Q_o', 'Q_p', 'Q_prv', 'h_Ik', 'Q_ik'] if var in model.states]
     x_t = np.concatenate(variables_to_concatenate)
 
@@ -175,7 +173,6 @@ def apply_EKF_BC(inp, imp_list, msmts, flow_list, bc_measurements, measurements,
     t=[]
     P_xk1k = []
     P_xk1k1 = []
-    #P_xkk.append(P_x_k_k.copy())
     
     #Run model for 24 hours
     # While time is less than 24 hours
@@ -251,14 +248,14 @@ def apply_EKF_BC(inp, imp_list, msmts, flow_list, bc_measurements, measurements,
             u_p[PU5_id] = 0
         
         # Tank 4
-        if model.H_j[T4_id] < 132.5 + 2 - 2: # yifan adjust
+        if model.H_j[T4_id] < 132.5 + 2 - 2: # inaccurate knowleadge of the control rules, so adjust the thresholds a bit
             u_p[PU6_id] = 1
         if model.H_j[T4_id] > 132.5 + 3.5 + 2:
             u_p[PU6_id] = 0
             
-        if model.H_j[T4_id] < 132.5 + 3: # yifan adjust
+        if model.H_j[T4_id] < 132.5 + 3: # inaccurate knowleadge of the control rules, so adjust the thresholds a bit
             u_p[PU7_id] = 1
-        if model.H_j[T4_id] > 132.5 + 4.5 - 0.3: # yifan adjust
+        if model.H_j[T4_id] > 132.5 + 4.5 - 0.3: # inaccurate knowleadge of the control rules, so adjust the thresholds a bit
             u_p[PU7_id] = 0
             
         # Tank 5
@@ -270,7 +267,7 @@ def apply_EKF_BC(inp, imp_list, msmts, flow_list, bc_measurements, measurements,
         # Tank 7
         if model.H_j[T7_id] < 102 + 2.5:
             u_p[PU10_id] = 1
-        if model.H_j[T7_id] > 102 + 4.8 - 0.5: # yifan adjust
+        if model.H_j[T7_id] > 102 + 4.8 - 0.5: # inaccurate knowleadge of the control rules, so adjust the thresholds a bit
             u_p[PU10_id] = 0
             
         if model.H_j[T7_id] < 102 + 1:
