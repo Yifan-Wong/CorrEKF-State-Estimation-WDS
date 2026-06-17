@@ -6,9 +6,11 @@ This repository provides the code for the paper **"Correlation-aware State Estim
 
 To make the main workflow easier to run, we provide a Google Colab version of the main notebook:
 
-- [EKFs_Main_Results_colab_version.ipynb](https://github.com/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/EKFs_Main_Results_colab_version.ipynb)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Yifan-Wong/CorrEKF-State-Estimation-WDS/blob/main/EKFs_Main_Results_colab_version.ipynb)
 
-This Colab notebook allows readers to run the main code without manually setting up a local virtual environment.
+The Colab notebook automatically installs the required packages, clones this repository into the Colab runtime, and sets the working directory. Readers do not need to manually upload the local Python files or the `pipedream_solver/` folder.
+
+Note: while this repository is private, Colab can clone it only if the runtime has access to the repository. For public release, the notebook will work directly from the public GitHub URL.
 
 If you prefer to run the notebooks locally, create the environment with one of the following commands:
 
