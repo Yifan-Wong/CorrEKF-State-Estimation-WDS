@@ -265,7 +265,7 @@ def wntr_2_pd(wn,t_run, dt):
             superjunctions_new['tank_max']=superjunctions_m['tank_max'][tank_ind]
             
             # #Append superjunctions_new to the existing superjunctions dataframe
-            superjunctions_m=superjunctions_m.append(superjunctions_new)
+            superjunctions_m = pd.concat([superjunctions_m, superjunctions_new], ignore_index=False)
             
             #Connect the link to the new node instead of the tank
             superlinks_m.loc[link_index[0],connect_col]=superjunctions_new['id'].values[0]
@@ -282,7 +282,7 @@ def wntr_2_pd(wn,t_run, dt):
             orifices_row['y_max']=superlinks_m['g1'][link_index].values[0]
             orifices_row['C']=0.67
             
-            orifices=orifices.append(orifices_row)
+            orifices = pd.concat([orifices, orifices_row], ignore_index=False)
    
 #        orifices = orifices.astype(orifices_row.dtypes.to_dict())
   
@@ -298,7 +298,7 @@ def wntr_2_pd(wn,t_run, dt):
     orifices_row['y_max']=wn.get_link('v2').diameter
     orifices_row['C']=0.67
     
-    orifices=orifices.append(orifices_row)
+    orifices = pd.concat([orifices, orifices_row], ignore_index=False)
     #####################################################################Create PRVS dataframe 
        
     prvs=pd.DataFrame(columns=['name','id','sj_0','sj_1','A','orientation','z_o','y_max','C_active', 'C_open', 'Hset'], dtype=object)
@@ -322,7 +322,7 @@ def wntr_2_pd(wn,t_run, dt):
             prv_row['C_open']=0.55
             prv_row['Hset']= wn.get_node(valve.end_node_name).elevation + valve.setting
             
-            prvs=prvs.append(prv_row)
+            prvs = pd.concat([prvs, prv_row], ignore_index=False)
 
     
     #If there is a pump, create the pumps variable
@@ -372,7 +372,7 @@ def wntr_2_pd(wn,t_run, dt):
             pumps_row['b_p']=B
             pumps_row['c_p']=2
 
-            pumps=pumps.append(pumps_row)
+            pumps = pd.concat([pumps, pumps_row], ignore_index=False)
         
         
         #Convert the data types of orifices/pumps to orifices_row/pumps_row to avoid problems later
