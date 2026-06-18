@@ -25,6 +25,11 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 _PROGRESS_DISPLAY = None
 
 
+def _reset_progress():
+    global _PROGRESS_DISPLAY
+    _PROGRESS_DISPLAY = None
+
+
 def _show_progress(message):
     global _PROGRESS_DISPLAY
     try:
@@ -38,6 +43,7 @@ def _show_progress(message):
  
 
 def run_pipedream_simulation(inp, t_run=None, dt=None, banded=False, num_iter=40, use_tank_init_cond=None):
+    _reset_progress()
     #Input path
     inp_file=inp  
     

@@ -24,6 +24,11 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 _PROGRESS_DISPLAY = None
 
 
+def _reset_progress():
+    global _PROGRESS_DISPLAY
+    _PROGRESS_DISPLAY = None
+
+
 def _show_progress(message):
     global _PROGRESS_DISPLAY
     try:
@@ -136,6 +141,7 @@ def create_full_matrix(model, dt, Q_in):  # delete Q_Ik
     return A_1, A_2, B, D, x_t, x_tp1, u, j, uk, dk, o, p, prv, Ik, ik, ik_offset
 
 def apply_EKF_BC(inp, imp_list, msmts, flow_list, bc_measurements, measurements, Qcov, Rcov, t_run=None, dt=None, banded=False, num_iter=40, use_tank_init_cond=None):
+    _reset_progress()
     
     wn = wntr.network.WaterNetworkModel(inp)
     
