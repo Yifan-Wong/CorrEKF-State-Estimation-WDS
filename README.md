@@ -10,8 +10,6 @@ To make the main workflow easier to run, we provide a Google Colab version of th
 
 The Colab notebook automatically installs the required packages, clones this repository into the Colab runtime, and sets the working directory. Readers do not need to manually upload the local Python files or the `pipedream_solver/` folder.
 
-Note: while this repository is private, Colab can clone it only if the runtime has access to the repository. For public release, the notebook will work directly from the public GitHub URL.
-
 If you prefer to run the notebooks locally, create the environment with one of the following commands:
 
 ```bash
