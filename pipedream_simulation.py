@@ -21,6 +21,20 @@ from matplotlib.ticker import FormatStrFormatter
 #Don't show future warnings
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
+
+_PROGRESS_DISPLAY = None
+
+
+def _show_progress(message):
+    global _PROGRESS_DISPLAY
+    try:
+        from IPython.display import display
+        if _PROGRESS_DISPLAY is None:
+            _PROGRESS_DISPLAY = display(message, display_id=True)
+        else:
+            _PROGRESS_DISPLAY.update(message)
+    except Exception:
+        print("\r" + message, end="", flush=True)
  
 
 def run_pipedream_simulation(inp, t_run=None, dt=None, banded=False, num_iter=40, use_tank_init_cond=None):
@@ -110,7 +124,7 @@ def run_pipedream_simulation(inp, t_run=None, dt=None, banded=False, num_iter=40
 #        if 'Net1' in inp:
 #            j = int(np.floor(model.t/3600)) //2
         Q_in_t = -(model.superjunctions['demand_pattern'].map(multipliers.loc[j]).fillna(0.) * model.superjunctions['base_demand']).values
-        print(j, model.t)
+        _show_progress(f"Simulation progress: pattern step {j}, t = {model.t / 3600:.2f} h ({model.t:.0f} s)")
         Q_in_all.append(Q_in_t)
         H_bc_t = H_bc
         

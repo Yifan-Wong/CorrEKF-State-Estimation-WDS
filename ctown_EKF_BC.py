@@ -20,6 +20,20 @@ from matplotlib.ticker import FormatStrFormatter
 #Don't show future warnings
 import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
+
+_PROGRESS_DISPLAY = None
+
+
+def _show_progress(message):
+    global _PROGRESS_DISPLAY
+    try:
+        from IPython.display import display
+        if _PROGRESS_DISPLAY is None:
+            _PROGRESS_DISPLAY = display(message, display_id=True)
+        else:
+            _PROGRESS_DISPLAY.update(message)
+    except Exception:
+        print("\r" + message, end="", flush=True)
  
 def create_full_matrix(model, dt, Q_in):  # delete Q_Ik
     g = 9.81
@@ -181,7 +195,7 @@ def apply_EKF_BC(inp, imp_list, msmts, flow_list, bc_measurements, measurements,
         hour=model.t/3600
         j=int(np.floor(model.t//wn.options.time.pattern_timestep))
         Q_in_t = -(model.superjunctions['demand_pattern'].map(multipliers.loc[j]).fillna(0.) * model.superjunctions['base_demand']).values
-        print(j, model.t)
+        _show_progress(f"Simulation progress: pattern step {j}, t = {model.t / 3600:.2f} h ({model.t:.0f} s)")
         Q_in_all.append(Q_in_t)
         H_bc_t = H_bc
         
@@ -319,8 +333,11 @@ def apply_EKF_BC(inp, imp_list, msmts, flow_list, bc_measurements, measurements,
         Q_pump.append(model.Q_p.copy())
         Q_prv.append(model.Q_prv.copy())
         t.append(model.t)
-        P_xk1k.append(P_x_k1_k.copy())
-        P_xk1k1.append(P_x_k1_k1.copy())
+        # Store only the diagonal entries used later: superjunction heads and link flows.
+        P_x_k1_k_diag = P_x_k1_k.diagonal()
+        P_x_k1_k1_diag = P_x_k1_k1.diagonal()
+        P_xk1k.append(np.concatenate((P_x_k1_k_diag[:model.M], P_x_k1_k_diag[-model.NK:])).copy())
+        P_xk1k1.append(np.concatenate((P_x_k1_k1_diag[:model.M], P_x_k1_k1_diag[-model.NK:])).copy())
     
     H = np.vstack(H)
     Q = np.vstack(Q)
@@ -329,8 +346,8 @@ def apply_EKF_BC(inp, imp_list, msmts, flow_list, bc_measurements, measurements,
     Q_prv = np.vstack(Q_prv)
     #dem_source=np.vstack(dem_source)
     t=np.vstack(t)
-    P_xk1k = np.stack(P_xk1k, axis=0)
-    P_xk1k1 = np.stack(P_xk1k1, axis=0)
+    P_xk1k = np.vstack(P_xk1k)
+    P_xk1k1 = np.vstack(P_xk1k1)
     
     #Sample down the Q matrix to only every column from a new link, not each sub-link
     #i.e. if there are 12 internal links in each superlink, then each of the first 
